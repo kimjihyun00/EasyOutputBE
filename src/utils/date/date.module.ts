@@ -1,6 +1,7 @@
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { DateUtil } from "./date.util";
 
+@Global()
 @Module({
   providers: [DateUtil],
   exports: [DateUtil],

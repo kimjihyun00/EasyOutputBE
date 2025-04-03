@@ -16,13 +16,15 @@ import { Response } from "express";
 import { GoogleProfile } from "./dtos/google-profile";
 import { MemberRole, MemberStatus } from "../common/enums/member-code.enum";
 import { ServiceException } from "../common/exceptions/service.execption";
+import { DateUtil } from "../utils/date/date.util";
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name, { timestamp: true });
   constructor(
-    private database: DatabaseService,
-    private jwtService: JwtService,
+    private readonly database: DatabaseService,
+    private readonly jwtService: JwtService,
+    private readonly dateUtil: DateUtil,
   ) {}
 
   async getProfile(userPayload: UserPayload) {
@@ -70,6 +72,7 @@ export class AuthService {
 
     if (member === null) {
       // 만약 회원 정보가 없다면 회원가입시키기
+      const nowDate = this.dateUtil.getNowUTC();
       member = await this.database.member.create({
         data: {
           email: googleProfile.email,
@@ -79,8 +82,8 @@ export class AuthService {
           role: MemberRole.User,
           oauthProvider: googleProfile.provider,
           oauthId: googleProfile.externalId,
-          signupDate: new Date(),
-          updateDate: new Date(),
+          signupDate: nowDate,
+          updateDate: nowDate,
         },
       });
     }
@@ -100,6 +103,7 @@ export class AuthService {
       throw new ServiceException("CONFLICT", "USER_DUPLICATE");
     }
 
+    const nowDate = this.dateUtil.getNowUTC();
     const newMember = await this.database.member.create({
       data: {
         email: emailSignupDto.email,
@@ -107,8 +111,8 @@ export class AuthService {
         username: emailSignupDto.username,
         status: MemberStatus.Valid,
         role: MemberRole.User,
-        signupDate: new Date(),
-        updateDate: new Date(),
+        signupDate: nowDate,
+        updateDate: nowDate,
       },
     });
 

@@ -22,16 +22,19 @@ import {
 } from "../common/enums/correction-answer-code.enum";
 import { ServiceException } from "../common/exceptions/service.execption";
 import { CORRECTION_ANSWER } from "../common/constants";
+import { DateUtil } from "../utils/date/date.util";
 
 @Injectable()
 export class DiaryService {
   constructor(
     private readonly database: DatabaseService,
     private readonly openaiService: OpenaiService,
+    private readonly dateUtil: DateUtil,
   ) {}
 
   async createDiary(memberId: bigint, body: WriteDiaryDto) {
-    const nowDate = new Date();
+    const nowDate = this.dateUtil.getNowUTC();
+
     const diary = await this.database.diary.create({
       data: {
         memberId: memberId,
@@ -141,7 +144,7 @@ export class DiaryService {
     diaryId: bigint,
   ) {
     return this.database.$transaction(async (tx) => {
-      const nowDate = new Date();
+      const nowDate = this.dateUtil.getNowUTC();
       const revision = await tx.diaryRevision.create({
         data: {
           diaryId: diaryId,
