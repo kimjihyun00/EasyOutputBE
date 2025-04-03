@@ -1,3 +1,6 @@
+# db config
+/sql
+
 # compiled output
 /dist
 /node_modules
