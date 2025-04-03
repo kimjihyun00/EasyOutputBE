@@ -1,0 +1,99 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  memberId      BigInt    @id @default(autoincrement()) @map("member_id")
+  username      String
+  email         String
+  password      String
+  oauthProvider String?   @map("oauth_provider")
+  oauthId       String?   @map("oauth_id")
+  status        String
+  role          String
+  signupDate    DateTime  @map("signup_date")
+  updateDate    DateTime? @map("update_date")
+  deleteDate    DateTime? @map("delete_date")
+  lastLoginDate DateTime? @map("last_login_date")
+  lastLoginIp   String?   @map("last_login_ip")
+}
+
+model Diary {
+  diaryId    BigInt    @id @default(autoincrement()) @map("diary_id")
+  memberId   BigInt    @map("member_id")
+  lang       String
+  status     String
+  title      String
+  content    String
+  diaryDate  DateTime  @map("diary_date")
+  createDate DateTime? @map("create_date")
+  updateDate DateTime? @map("update_date")
+  deleteDate DateTime? @map("delete_date")
+
+  revisions DiaryRevision[]
+}
+
+model DiaryRevision {
+  revisionId      BigInt       @id @default(autoincrement()) @map("revision_id")
+  diaryId         BigInt       @map("diary_id")
+  status          String
+  type            String
+  content         String
+  overallFeedback String?      @map("overall_feedback")
+  createDate      DateTime?    @map("create_date")
+  updateDate      DateTime?    @map("update_date")
+  deleteDate      DateTime?    @map("delete_date")
+  diary           Diary        @relation(fields: [diaryId], references: [diaryId])
+  corrections     Correction[]
+
+  @@map("diary_revision")
+}
+
+model Correction {
+  correctionId         BigInt    @id @default(autoincrement()) @map("correction_id")
+  revisionId           BigInt    @map("revision_id")
+  status               String
+  explanation          String
+  original             String
+  originalOffset       String?   @map("original_offset")
+  originalHighlights   String?   @map("original_highlights")
+  correction           String
+  correctionOffset     String?   @map("correction_offset")
+  correctionHighlights String?   @map("correction_highlights")
+  createDate           DateTime? @map("create_date")
+  updateDate           DateTime? @map("update_date")
+  deleteDate           DateTime? @map("delete_date")
+
+  diaryRevision DiaryRevision @relation(fields: [revisionId], references: [revisionId])
+}
+
+model CorrectonQuestion {
+  questionId BigInt    @id @default(autoincrement()) @map("question_id")
+  revisionId BigInt    @map("revision_id")
+  status     String
+  question   String
+  createDate DateTime? @map("create_date")
+  updateDate DateTime? @map("update_date")
+  deleteDate DateTime? @map("delete_date")
+
+  @@map("correction_question")
+}
+
+model CorrectionAnswer {
+  answerId   BigInt    @id @default(autoincrement()) @map("answer_id")
+  questId    BigInt    @map("question_id")
+  answer     String
+  type       String
+  status     String
+  createDate DateTime? @map("create_date")
+  updateDate DateTime? @map("update_date")
+  deleteDate DateTime? @map("delete_date")
+
+  @@map("correction_answer")
+}

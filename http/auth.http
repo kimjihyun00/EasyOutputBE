@@ -1,0 +1,36 @@
+### 이메일 회원 가입
+POST {{base_url}}/auth/signup/email
+Content-Type: application/json
+
+{
+  "email" : "test@test.com",
+  "password": "qwer1234",
+  "confirmPassword" : "qwer1234",
+  "username": "test1"
+}
+
+### 일반 이메일 로그인
+POST {{base_url}}/auth/login/email
+Content-Type: application/json
+
+{
+  "email" : "test@test.com",
+  "password": "qwer1234"
+}
+
+### 로그인한 현재 유저 정보 가져오기
+GET {{base_url}}/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJJZCI6IjEiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0MzQ4NDk0NSwiZXhwIjoxNzQzNTcxMzQ1fQ.h-o0XNkym5p9AVdJH7k7tvddlECuZ3R2uOVNTnwyPH8
+
+### 구글 소셜 로그인
+GET {{base_url}}/auth/oauth2/google
+
+### 다이어리 조회
+GET {{base_url}}/diary/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJJZCI6IjEiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0MzU4MjczNSwiZXhwIjoxNzQzNjY5MTM1fQ.S-2NRjttLfrKRTAcAU2Faks4GuggBaBCb-HZHkdL06I
+
+
+### 나의 다이어리 리스트 조회
+GET {{base_url}}/diary/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJJZCI6IjEiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0MzU4MjczNSwiZXhwIjoxNzQzNjY5MTM1fQ.S-2NRjttLfrKRTAcAU2Faks4GuggBaBCb-HZHkdL06I
+
