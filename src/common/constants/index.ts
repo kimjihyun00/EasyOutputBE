@@ -1,10 +1,16 @@
 export const DIARY = {
-  MIN_LENGTH: 100,
-  MAX_LENGTH: 1000,
+  TITLE: {
+    MAX_LENGTH: 100,
+  },
+  CONTENT: {
+    MIN_LENGTH: 100,
+    MAX_LENGTH: 1000,
+  },
 } as const;
 
 export const CONNECTION_QUESTION = {
-  MIN_LENGTH: 100,
+  MIN_LENGTH: 30,
+  MAX_LENGTH: 100,
 } as const;
 
 export const CORRECTION_ANSWER = {

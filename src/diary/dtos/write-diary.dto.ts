@@ -1,4 +1,13 @@
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator";
+import {
+  IsDate,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MIN_LENGTH,
+  MinLength,
+} from "class-validator";
+import { DIARY } from "../../common/constants";
 
 export class WriteDiaryDto {
   @IsString()
@@ -7,13 +16,16 @@ export class WriteDiaryDto {
 
   @IsString()
   @IsOptional()
+  @MaxLength(DIARY.TITLE.MAX_LENGTH)
   readonly title?: string;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(1000)
+  @MinLength(DIARY.CONTENT.MIN_LENGTH)
+  @MaxLength(DIARY.CONTENT.MAX_LENGTH)
   readonly content: string;
 
   @IsNotEmpty()
+  @IsDate()
   readonly diaryDate: Date;
 }
