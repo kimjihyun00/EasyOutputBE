@@ -253,14 +253,15 @@ export class DiaryService {
 
     // transaction start
     return this.database.$transaction(async (tx) => {
+      const nowDate = this.dateUtil.getNowUTC();
       // question db 저장
       const question = await tx.correctonQuestion.create({
         data: {
           revisionId,
           status: CorrectionQuestionStatus.Valid,
           question: requestBody.question,
-          createDate: new Date(),
-          updateDate: new Date(),
+          createDate: nowDate,
+          updateDate: nowDate,
         },
       });
 
@@ -271,8 +272,8 @@ export class DiaryService {
           answer: result,
           type: `${CorrectionAnswerType.Openai}/${model}`,
           status: CorrectionAnswerStatus.Valid,
-          createDate: new Date(),
-          updateDate: new Date(),
+          createDate: nowDate,
+          updateDate: nowDate,
         },
       });
 
