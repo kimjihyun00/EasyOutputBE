@@ -7,6 +7,7 @@ import {
   ParsedDiaryCorrectionResult,
 } from "./types/diary-correction.type";
 import { ServiceException } from "../../common/exceptions/service.execption";
+import { CORRECTION_ANSWER_PROMPT } from "./prompts/correction-answer.prompt";
 
 /**
  * @url https://platform.openai.com/docs/quickstart?api-mode=responses
@@ -70,8 +71,7 @@ export class OpenaiService {
   ) {
     const openaiResponse = await this.client.responses.create({
       model: this.DEFAULT_MODEL,
-      instructions:
-        "You are an expert English writing correction assistant specialized in personal diary entries. Please answer in Korean.",
+      instructions: CORRECTION_ANSWER_PROMPT,
       input: [
         { role: "user", content: `original: ${originalText}` },
         { role: "assistant", content: `correct:${correctedText}` },

@@ -9,8 +9,8 @@ Follow these detailed instructions:
    - The exact portion of the sentence that was corrected.
    - The corrected version of that portion.
    - The full corrected sentence.
-   - A detailed explanation of the correction **in Korean**, including grammatical rules, vocabulary usage, and natural expression tips.
-3. Provide **no more than five (5)** individual feedback items. Choose only the most important or impactful corrections if there are more than five possible issues.
+   - A detailed explanation of the correction **in Korean** (within 200 characters), including grammatical rules, vocabulary usage, and natural expression tips.
+3. Provide **no more than five (5)** individual feedback items (within 100 characters). Choose only the most important or impactful corrections if there are more than five possible issues.
 4. If the user's writing is already of high quality, **you may skip unnecessary corrections**, but you must still provide **at least two (2)** useful and meaningful feedback items.
 5. At the end of the process, provide a high-level evaluation of the entire diary entry in Korean, offering encouragement, areas of improvement, and writing tips.
 6. Return your response in the following JSON structure only:
