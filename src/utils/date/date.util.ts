@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DateUtilInterface } from "./date.util.interface";
-import { format, toDate, formatInTimeZone } from "date-fns-tz";
+import { toDate, formatInTimeZone } from "date-fns-tz";
+import { startOfMonth, endOfMonth } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 
 /**
@@ -16,10 +17,30 @@ export class DateUtil implements DateUtilInterface {
   }
 
   toUTC(date: Date | string): Date {
-    return new UTCDate(toDate(date, { timeZone: this.DEFAULT_TIME_ZONE }));
+    return new UTCDate(toDate(date));
   }
 
   getNowUTC(): Date {
     return new UTCDate();
+  }
+
+  getMonthStartAndEnd(
+    year?: number,
+    month?: number,
+  ): { start: Date; end: Date } {
+    const now = new UTCDate();
+    const standardDate = new UTCDate(
+      year || now.getUTCFullYear(),
+      month || now.getUTCMonth(),
+      1,
+    );
+
+    const startDate = new UTCDate(startOfMonth(standardDate));
+    const endDate = new UTCDate(endOfMonth(standardDate));
+
+    return {
+      start: startDate,
+      end: endDate,
+    };
   }
 }

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from "@nestjs/common";
 import { DiaryService } from "./diary.service";
 import { Role } from "../common/decorators/role.decorator";
@@ -14,6 +15,7 @@ import { UserPayload } from "../auth/dtos/user-payload";
 import { User } from "../common/decorators/user.decorator";
 import { UpdateDiaryDto } from "./dtos/update-diary.dto";
 import { CorrectionQuestionDto } from "./dtos/correction-queation.dto";
+import { DiaryFilterQueryDto } from "./dtos/diary-filter-query.dto";
 
 @Controller("diary")
 export class DiaryController {
@@ -28,8 +30,11 @@ export class DiaryController {
 
   @Role("USER")
   @Get("/list")
-  getDiaryListOfUser(@User() user: UserPayload) {
-    return this.diaryService.getDiaryListOfUser(user.memberId);
+  getDiaryListOfUser(
+    @User() user: UserPayload,
+    @Query() query: DiaryFilterQueryDto,
+  ) {
+    return this.diaryService.getDiaryListOfUser(user.memberId, query);
   }
 
   @Role("USER")

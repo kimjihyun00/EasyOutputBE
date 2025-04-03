@@ -5,4 +5,8 @@ export interface DateUtilInterface {
   formatDate(date: Date, formatStr: string): string;
   toUTC(date: Date | string): Date;
   getNowUTC(): Date;
+  getMonthStartAndEnd(
+    year?: number,
+    month?: number,
+  ): { start: Date; end: Date };
 }

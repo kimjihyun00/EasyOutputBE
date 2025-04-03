@@ -23,6 +23,7 @@ import {
 import { ServiceException } from "../common/exceptions/service.execption";
 import { CORRECTION_ANSWER } from "../common/constants";
 import { DateUtil } from "../utils/date/date.util";
+import { DiaryFilterQueryDto } from "./dtos/diary-filter-query.dto";
 
 @Injectable()
 export class DiaryService {
@@ -50,12 +51,23 @@ export class DiaryService {
     return new ApiResponse().setMessage("Diary created").setData(diary);
   }
 
-  async getDiaryListOfUser(memberId: bigint) {
+  async getDiaryListOfUser(memberId: bigint, query: DiaryFilterQueryDto) {
+    // 이번달의 시작과 끝.
+    const { start, end } = this.dateUtil.getMonthStartAndEnd(
+      query.year,
+      query.month,
+    );
+
+    // gt, gte, lt, lte
     const diaries = await this.database.diary.findMany({
       relationLoadStrategy: "join",
       where: {
         memberId: memberId,
         status: DiaryStatus.Valid,
+        diaryDate: {
+          gte: start,
+          lte: end,
+        },
       },
       select: {
         diaryId: true,
@@ -68,6 +80,10 @@ export class DiaryService {
             revisions: { where: { status: DiaryRevisionStatus.Valid } },
           },
         },
+      },
+      orderBy: {
+        // diaryDate: "desc",
+        diaryDate: "asc",
       },
     });
 

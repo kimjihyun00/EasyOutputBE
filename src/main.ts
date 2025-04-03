@@ -15,8 +15,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // 정의한 값만 받기, 정의 안한 값이면 오류
-      forbidNonWhitelisted: true,
+      whitelist: true,
+      forbidNonWhitelisted: true, // 정의한 값만 받기, 정의 안한 값이면 오류
       transform: true, // request 자동 형변환
       exceptionFactory: ValidationExceptionFactory,
     }),
