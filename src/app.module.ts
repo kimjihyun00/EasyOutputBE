@@ -13,6 +13,7 @@ import { RequestLoggerMiddleware } from "./common/middlewares/request-logger.mid
 import { DiaryModule } from "./diary/diary.module";
 import { ValidationExceptionFactory } from "./common/filter/validation-exception.factory";
 import { OpenaiModule } from './utils/openai/openai.module';
+import { DateModule } from './utils/date/date.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { OpenaiModule } from './utils/openai/openai.module';
     AuthModule,
     DiaryModule,
     OpenaiModule,
+    DateModule,
   ],
   controllers: [],
   providers: [
