@@ -1,7 +1,7 @@
 import { IsNumber, IsOptional, IsString } from "class-validator";
 import { Transform } from "class-transformer";
 
-export class DiaryFilterQueryDto {
+export class ListDiaryCalendarQueryDto {
   @IsOptional()
   @Transform(({ value }) => Number(value))
   @IsNumber()

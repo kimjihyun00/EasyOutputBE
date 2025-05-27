@@ -23,7 +23,8 @@ import {
 import { ServiceException } from "../common/exceptions/service.execption";
 import { CORRECTION_ANSWER } from "../common/constants";
 import { DateUtil } from "../utils/date/date.util";
-import { DiaryFilterQueryDto } from "./dtos/diary-filter-query.dto";
+import { ListDiaryCursorQueryDto } from "./dtos/list-diary-cursor-query.dto";
+import { ListDiaryCalendarQueryDto } from "./dtos/list-diary-calendar-query.dto";
 
 @Injectable()
 export class DiaryService {
@@ -51,7 +52,45 @@ export class DiaryService {
     return new ApiResponse().setMessage("Diary created").setData(diary);
   }
 
-  async getDiaryListOfUser(memberId: bigint, query: DiaryFilterQueryDto) {
+  async getDiaryListOfUser(memberId: bigint, query: ListDiaryCursorQueryDto) {
+    // diary Date가 해당 cursor 보다 낮은거 가죠오기
+    const diaries = await this.database.diary.findMany({
+      relationLoadStrategy: "join",
+      take: 3,
+      skip: 1, // Skip the cursor
+      cursor: {
+        diaryId: BigInt(query.cursor ?? 0),
+        // diaryDate: this.dateUtil.toUTC(query.cursor ?? new Date()),
+        // unique 설정되어야 함.
+      },
+      where: {
+        memberId: memberId,
+        status: DiaryStatus.Valid,
+      },
+      select: {
+        diaryId: true,
+        title: true,
+        diaryDate: true,
+        createDate: true,
+        status: true,
+        _count: {
+          select: {
+            revisions: { where: { status: DiaryRevisionStatus.Valid } },
+          },
+        },
+      },
+      orderBy: {
+        diaryDate: "desc",
+      },
+    });
+
+    return new ApiResponse().setMessage("Diary list of users").setData(diaries);
+  }
+
+  async getDiaryCalendarListOfUser(
+    memberId: bigint,
+    query: ListDiaryCalendarQueryDto,
+  ) {
     // 이번달의 시작과 끝.
     const { start, end } = this.dateUtil.getMonthStartAndEnd(
       query.year,

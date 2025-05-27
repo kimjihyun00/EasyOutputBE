@@ -15,7 +15,8 @@ import { UserPayload } from "../auth/dtos/user-payload";
 import { User } from "../common/decorators/user.decorator";
 import { UpdateDiaryDto } from "./dtos/update-diary.dto";
 import { CorrectionQuestionDto } from "./dtos/correction-queation.dto";
-import { DiaryFilterQueryDto } from "./dtos/diary-filter-query.dto";
+import { ListDiaryCalendarQueryDto } from "./dtos/list-diary-calendar-query.dto";
+import { ListDiaryCursorQueryDto } from "./dtos/list-diary-cursor-query.dto";
 
 @Controller("diary")
 export class DiaryController {
@@ -32,9 +33,18 @@ export class DiaryController {
   @Get("/list")
   getDiaryListOfUser(
     @User() user: UserPayload,
-    @Query() query: DiaryFilterQueryDto,
+    @Query() query: ListDiaryCursorQueryDto,
   ) {
     return this.diaryService.getDiaryListOfUser(user.memberId, query);
+  }
+
+  @Role("USER")
+  @Patch("/list/cal")
+  getDiaryCalendarListOfUser(
+    @User() user: UserPayload,
+    @Query() query: ListDiaryCalendarQueryDto,
+  ) {
+    return this.diaryService.getDiaryCalendarListOfUser(user.memberId, query);
   }
 
   @Role("USER")
